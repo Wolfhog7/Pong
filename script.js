@@ -8,8 +8,8 @@ let downPressed = false;
 
 const score = {
   player: 0,
-  ai: 0
-}
+  ai: 0,
+};
 
 class Paddle {
   constructor(width, height, x, y, speed) {
@@ -30,7 +30,7 @@ const ball = {
   dx: -3,
   dy: Math.random() + 0.5,
   radius: 5,
-}
+};
 
 function drawBall() {
   ctx.beginPath();
@@ -76,7 +76,7 @@ function drawScore() {
   ctx.font = "48px Arial";
   ctx.fillStyle = "FFF";
   ctx.textAlign = "center";
-  ctx.fillText(score.ai, canvas.width / 4 * 3, canvas.width / 8);
+  ctx.fillText(score.ai, (canvas.width / 4) * 3, canvas.width / 8);
 
   if (ball.x + ball.dx + ball.radius > canvas.width) {
     score.player++;
@@ -84,7 +84,7 @@ function drawScore() {
     ball.y = canvas.height / 2;
     ball.dx = Math.abs(ball.dx);
     ball.dx += 1;
-    ball.dy = Math.random() + 0.5
+    ball.dy = Math.random() + 1.5;
     paddle.y = 112.5;
     aiPaddle.y = 112.5;
     aiPaddle.speed += 0.7;
@@ -93,7 +93,7 @@ function drawScore() {
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
     ball.dx = -Math.abs(ball.dx);
-    ball.dy = Math.random() + 0.5
+    ball.dy = Math.random() + 1.5;
     paddle.y = 112.5;
     aiPaddle.y = 112.5;
   }
@@ -122,7 +122,10 @@ function controls() {
 
 function aiMovement() {
   if (Math.sign(ball.dx) === 1 && ball.x > canvas.width / 2) {
-    if (ball.y > aiPaddle.y + aiPaddle.height - 20 && aiPaddle.y + aiPaddle.height + aiPaddle.speed < canvas.height) {
+    if (
+      ball.y > aiPaddle.y + aiPaddle.height - 20 &&
+      aiPaddle.y + aiPaddle.height + aiPaddle.speed < canvas.height
+    ) {
       aiPaddle.y += aiPaddle.speed;
     } else if (ball.y < aiPaddle.y + 20 && aiPaddle.y - aiPaddle.speed > 0) {
       aiPaddle.y -= aiPaddle.speed;
@@ -131,18 +134,26 @@ function aiMovement() {
 }
 
 function paddleCollision() {
-  if (ball.x - ball.radius < paddle.x + paddle.width && ball.y > paddle.y && ball.y < paddle.y + paddle.height) {
+  if (
+    ball.x - ball.radius < paddle.x + paddle.width &&
+    ball.y > paddle.y &&
+    ball.y < paddle.y + paddle.height
+  ) {
     ball.dx = Math.abs(ball.dx) + 0.1;
-    ball.dy += 0.05;
+    ball.dy *= Math.random() + 0.5;
   }
-  if (ball.x + ball.radius > aiPaddle.x && ball.y > aiPaddle.y && ball.y < aiPaddle.y + aiPaddle.height) {
+  if (
+    ball.x + ball.radius > aiPaddle.x &&
+    ball.y > aiPaddle.y &&
+    ball.y < aiPaddle.y + aiPaddle.height
+  ) {
     ball.dx = -Math.abs(ball.dx) - 0.1;
-    ball.dy -= 0.05;
+    ball.dy *= Math.random() + 0.5;
   }
 }
 
 function isGameOver() {
-  const winner = document.getElementById('end');
+  const winner = document.getElementById("end");
   if (score.player === 5) {
     end.innerHTML = "You Win!";
     ball.dx = 0;
@@ -189,7 +200,10 @@ function draw() {
 
   if (upPressed && paddle.y - paddle.speed >= 0) {
     paddle.y -= paddle.speed;
-  } else if (downPressed && paddle.y + paddle.height + paddle.speed < canvas.height) {
+  } else if (
+    downPressed &&
+    paddle.y + paddle.height + paddle.speed < canvas.height
+  ) {
     paddle.y += paddle.speed;
   }
 
